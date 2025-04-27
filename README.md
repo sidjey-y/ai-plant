@@ -135,8 +135,3 @@ ai-plant/
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Acknowledgments
-
-- Soil science data provided by agricultural research institutions
-- Weather data from meteorological services
-- IoT sensor manufacturers for hardware integration 
