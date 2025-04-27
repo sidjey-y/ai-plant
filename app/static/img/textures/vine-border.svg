@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#33691E" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#7CB342" stop-opacity="0.8"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Top Left Corner -->
+  <path d="M0,50 C20,50 50,20 50,0 C50,20 80,50 100,50 C80,50 50,80 50,100 C50,80 20,50 0,50 Z" fill="url(#leafGradient)" transform="translate(10, 10) scale(0.5)"/>
+  
+  <!-- Top Right Corner -->
+  <path d="M0,50 C20,50 50,20 50,0 C50,20 80,50 100,50 C80,50 50,80 50,100 C50,80 20,50 0,50 Z" fill="url(#leafGradient)" transform="translate(390, 10) rotate(90) scale(0.5)"/>
+  
+  <!-- Bottom Left Corner -->
+  <path d="M0,50 C20,50 50,20 50,0 C50,20 80,50 100,50 C80,50 50,80 50,100 C50,80 20,50 0,50 Z" fill="url(#leafGradient)" transform="translate(10, 390) rotate(-90) scale(0.5)"/>
+  
+  <!-- Bottom Right Corner -->
+  <path d="M0,50 C20,50 50,20 50,0 C50,20 80,50 100,50 C80,50 50,80 50,100 C50,80 20,50 0,50 Z" fill="url(#leafGradient)" transform="translate(390, 390) rotate(180) scale(0.5)"/>
+  
+  <!-- Top Vine -->
+  <path d="M50,0 Q75,40 100,0 Q125,40 150,0 Q175,40 200,0 Q225,40 250,0 Q275,40 300,0 Q325,40 350,0" stroke="#558B2F" stroke-width="5" fill="none" transform="translate(50, 15)"/>
+  
+  <!-- Right Vine -->
+  <path d="M0,50 Q40,75 0,100 Q40,125 0,150 Q40,175 0,200 Q40,225 0,250 Q40,275 0,300 Q40,325 0,350" stroke="#558B2F" stroke-width="5" fill="none" transform="translate(385, 50)"/>
+  
+  <!-- Bottom Vine -->
+  <path d="M50,0 Q75,40 100,0 Q125,40 150,0 Q175,40 200,0 Q225,40 250,0 Q275,40 300,0 Q325,40 350,0" stroke="#558B2F" stroke-width="5" fill="none" transform="translate(50, 385) scale(1, -1)"/>
+  
+  <!-- Left Vine -->
+  <path d="M0,50 Q40,75 0,100 Q40,125 0,150 Q40,175 0,200 Q40,225 0,250 Q40,275 0,300 Q40,325 0,350" stroke="#558B2F" stroke-width="5" fill="none" transform="translate(15, 50) scale(-1, 1)"/>
+  
+  <!-- Small leaves along the vines -->
+  <path d="M0,0 C5,-10 15,-10 20,0 C15,10 5,10 0,0 Z" fill="#8BC34A" transform="translate(80, 15) rotate(10)"/>
+  <path d="M0,0 C5,-10 15,-10 20,0 C15,10 5,10 0,0 Z" fill="#8BC34A" transform="translate(150, 15) rotate(-10)"/>
+  <path d="M0,0 C5,-10 15,-10 20,0 C15,10 5,10 0,0 Z" fill="#8BC34A" transform="translate(220, 15) rotate(10)"/>
+  <path d="M0,0 C5,-10 15,-10 20,0 C15,10 5,10 0,0 Z" fill="#8BC34A" transform="translate(300, 15) rotate(-10)"/>
+  
+  <path d="M0,0 C-10,5 -10,15 0,20 C10,15 10,5 0,0 Z" fill="#8BC34A" transform="translate(385, 80) rotate(10)"/>
+  <path d="M0,0 C-10,5 -10,15 0,20 C10,15 10,5 0,0 Z" fill="#8BC34A" transform="translate(385, 150) rotate(-10)"/>
+  <path d="M0,0 C-10,5 -10,15 0,20 C10,15 10,5 0,0 Z" fill="#8BC34A" transform="translate(385, 220) rotate(10)"/>
+  <path d="M0,0 C-10,5 -10,15 0,20 C10,15 10,5 0,0 Z" fill="#8BC34A" transform="translate(385, 300) rotate(-10)"/>
+  
+  <path d="M0,0 C5,-10 15,-10 20,0 C15,10 5,10 0,0 Z" fill="#8BC34A" transform="translate(80, 385) rotate(-10) scale(1, -1)"/>
+  <path d="M0,0 C5,-10 15,-10 20,0 C15,10 5,10 0,0 Z" fill="#8BC34A" transform="translate(150, 385) rotate(10) scale(1, -1)"/>
+  <path d="M0,0 C5,-10 15,-10 20,0 C15,10 5,10 0,0 Z" fill="#8BC34A" transform="translate(220, 385) rotate(-10) scale(1, -1)"/>
+  <path d="M0,0 C5,-10 15,-10 20,0 C15,10 5,10 0,0 Z" fill="#8BC34A" transform="translate(300, 385) rotate(10) scale(1, -1)"/>
+  
+  <path d="M0,0 C-10,5 -10,15 0,20 C10,15 10,5 0,0 Z" fill="#8BC34A" transform="translate(15, 80) rotate(-10) scale(-1, 1)"/>
+  <path d="M0,0 C-10,5 -10,15 0,20 C10,15 10,5 0,0 Z" fill="#8BC34A" transform="translate(15, 150) rotate(10) scale(-1, 1)"/>
+  <path d="M0,0 C-10,5 -10,15 0,20 C10,15 10,5 0,0 Z" fill="#8BC34A" transform="translate(15, 220) rotate(-10) scale(-1, 1)"/>
+  <path d="M0,0 C-10,5 -10,15 0,20 C10,15 10,5 0,0 Z" fill="#8BC34A" transform="translate(15, 300) rotate(10) scale(-1, 1)"/>
+</svg> 

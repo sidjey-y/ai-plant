@@ -1,0 +1,138 @@
+{% extends 'soil_analysis.html' %}
+
+{% block title %}Soil Quality - (A)I Plant{% endblock %}
+
+{% set active_tab = 'quality' %}
+
+{% block content %}
+{{ super() }}
+
+<div class="container-fluid py-4">
+    <div class="row g-3 mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Soil Quality Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Soil Type</h6>
+                            <p>{{ soil_data.soil_type|default('Loamy') }}</p>
+                            
+                            <h6>Texture</h6>
+                            <p>{{ soil_data.texture|default('Medium') }}</p>
+                            
+                            <h6>Structure</h6>
+                            <p>{{ soil_data.structure|default('Granular') }}</p>
+                            
+                            <h6>Color</h6>
+                            <p>{{ soil_data.color|default('Dark Brown') }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Drainage</h6>
+                            <p>{{ soil_data.drainage|default('Good') }}</p>
+                            
+                            <h6>Compaction</h6>
+                            <p>{{ soil_data.compaction|default('Low') }}</p>
+                            
+                            <h6>Earthworm Count</h6>
+                            <p>{{ soil_data.earthworm_count|default('12 per square foot (High)') }}</p>
+                            
+                            <h6>Root Development</h6>
+                            <p>{{ soil_data.root_development|default('Healthy') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Soil Quality Factors</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="qualityRadarChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Quality Improvement Recommendations</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for rec in quality_recommendations|default([
+                            {'factor': 'Organic Matter', 'recommendation': 'Add compost to increase organic matter content'},
+                            {'factor': 'Soil Structure', 'recommendation': 'Reduce tillage to improve soil structure'},
+                            {'factor': 'Biodiversity', 'recommendation': 'Plant cover crops to increase soil biodiversity'},
+                            {'factor': 'Drainage', 'recommendation': 'No action needed - drainage is good'}
+                        ]) %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ rec.factor }}</h6>
+                            </div>
+                            <p class="mb-1 small">{{ rec.recommendation }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const qualityCtx = document.getElementById('qualityRadarChart').getContext('2d');
+        const qualityChart = new Chart(qualityCtx, {
+            type: 'radar',
+            data: {
+                labels: [
+                    'Organic Matter',
+                    'Nutrient Availability',
+                    'Soil Structure',
+                    'Drainage',
+                    'Biodiversity',
+                    'pH Balance',
+                    'CEC'
+                ],
+                datasets: [{
+                    label: 'Current Quality',
+                    data: [70, 60, 80, 90, 75, 85, 65],
+                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                    borderColor: '#4CAF50',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#4CAF50'
+                }, {
+                    label: 'Ideal Quality',
+                    data: [90, 90, 90, 90, 90, 90, 90],
+                    backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                    borderColor: '#2196F3',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointBackgroundColor: '#2196F3',
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: {
+                            display: true
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %} 

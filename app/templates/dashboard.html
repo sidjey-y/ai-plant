@@ -1,0 +1,499 @@
+{% extends "base.html" %}
+
+{% block title %}Farm Dashboard - (A)I Plant{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-tractor me-2"></i>Farm Dashboard</h1>
+            <p class="text-muted">Overview of your farming operations</p>
+                </div>
+        <div class="d-flex align-items-center">
+            <div class="me-3">
+                <p class="mb-0 text-muted"><i class="fas fa-calendar-day me-1"></i> <span id="currentDate">Loading date...</span></p>
+                <p class="mb-0 text-muted"><i class="fas fa-clock me-1"></i> <span id="currentTime">Loading time...</span></p>
+            </div>
+            <button id="refreshDashboard" class="btn btn-outline-primary">
+                <i class="fas fa-sync-alt me-1"></i> Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Avg. Soil Moisture</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="avgSoilMoisture">--</span>%</div>
+                            <div class="progress mt-2" style="height: 8px;">
+                                <div id="soilMoistureProgress" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <p class="mt-2 mb-0 small" id="soilMoistureStatus">Loading status...</p>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-tint fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Avg. Field Temperature</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"><span id="avgFieldTemp">--</span>°C</div>
+                            <div class="progress mt-2" style="height: 8px;">
+                                <div id="fieldTempProgress" class="progress-bar bg-success" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <p class="mt-2 mb-0 small" id="fieldTempStatus">Loading status...</p>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-thermometer-half fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Current Weather</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <span id="currentWeatherIcon"><i class="fas fa-cloud"></i></span>
+                                <span id="currentWeather">--</span>
+                            </div>
+                            <p class="mb-0 mt-2"><span id="currentTemp">--</span>°C | <span id="weatherForecast">--</span></p>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-cloud-sun-rain fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                System Health</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <span id="systemHealthStatus">--</span>
+                            </div>
+                            <div class="progress mt-2" style="height: 8px;">
+                                <div id="systemHealthProgress" class="progress-bar bg-warning" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <p class="mt-2 mb-0 small" id="systemHealthDetails">Loading details...</p>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-heartbeat fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Field Status</h6>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Filter
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#" data-field-filter="all">All Fields</a></li>
+                            <li><a class="dropdown-item" href="#" data-field-filter="active">Active Fields</a></li>
+                            <li><a class="dropdown-item" href="#" data-field-filter="inactive">Inactive Fields</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" data-field-filter="need-attention">Need Attention</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="fieldStatusTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Field Name</th>
+                                    <th>Crop Type</th>
+                                    <th>Last Irrigation</th>
+                                    <th>Soil Moisture</th>
+                                    <th>Temperature</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fieldStatusBody">
+                                <tr>
+                                    <td colspan="6" class="text-center">Loading field data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+                    </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Alerts & Notifications</h6>
+                </div>
+                <div class="card-body">
+                    <div id="alertsContainer">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer py-2">
+                    <a href="/alerts" class="btn btn-sm btn-outline-primary w-100">View All Alerts</a>
+                </div>
+            </div>
+
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Irrigation System</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <p class="mb-0 font-weight-bold">System Status:</p>
+                                <span id="irrigationStatus" class="badge bg-success">Online</span>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="autoIrrigationToggle" checked>
+                                <label class="form-check-label" for="autoIrrigationToggle">Auto</label>
+                            </div>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div id="waterLevelProgress" class="progress-bar bg-info" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <small class="d-block text-muted mt-1">Water Level: <span id="waterLevelPercent">75</span>%</small>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <button id="startIrrigationBtn" class="btn btn-sm btn-success w-100">
+                                <i class="fas fa-play me-1"></i> Start
+                            </button>
+                </div>
+                        <div class="col-6">
+                            <button id="stopIrrigationBtn" class="btn btn-sm btn-danger w-100">
+                                <i class="fas fa-stop me-1"></i> Stop
+                            </button>
+            </div>
+                    </div>
+                    <hr>
+                    <div class="small mb-0">
+                        <div class="d-flex justify-content-between">
+                            <span>Today's water usage:</span>
+                            <span class="font-weight-bold" id="todayWaterUsage">--</span>
+                    </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Last update:</span>
+                            <span id="lastIrrigationUpdate">--</span>
+                    </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function updateDateTime() {
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+        document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+    
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+    
+    function loadDashboardData() {
+        fetch('/api/dashboard-summary')
+            .then(response => response.json())
+            .then(data => {
+                const soilMoisture = data.avgSoilMoisture || 65;
+                document.getElementById('avgSoilMoisture').textContent = soilMoisture;
+                document.getElementById('soilMoistureProgress').style.width = `${soilMoisture}%`;
+                
+                let soilStatus = 'Optimal';
+                let soilStatusClass = 'text-success';
+                
+                if (soilMoisture < 40) {
+                    soilStatus = 'Low - Irrigation needed';
+                    soilStatusClass = 'text-danger';
+                } else if (soilMoisture > 80) {
+                    soilStatus = 'High - Consider drainage';
+                    soilStatusClass = 'text-warning';
+                }
+                
+                document.getElementById('soilMoistureStatus').textContent = soilStatus;
+                document.getElementById('soilMoistureStatus').className = `mt-2 mb-0 small ${soilStatusClass}`;
+                
+                const fieldTemp = data.avgFieldTemp || 22;
+                document.getElementById('avgFieldTemp').textContent = fieldTemp;
+                
+                const tempProgress = Math.min(100, Math.max(0, ((fieldTemp - 10) / 20) * 100));
+                document.getElementById('fieldTempProgress').style.width = `${tempProgress}%`;
+                
+                let tempStatus = 'Optimal';
+                let tempStatusClass = 'text-success';
+                
+                if (fieldTemp < 15) {
+                    tempStatus = 'Low - Monitor crops';
+                    tempStatusClass = 'text-warning';
+                } else if (fieldTemp > 30) {
+                    tempStatus = 'High - Heat stress risk';
+                    tempStatusClass = 'text-danger';
+                }
+                
+                document.getElementById('fieldTempStatus').textContent = tempStatus;
+                document.getElementById('fieldTempStatus').className = `mt-2 mb-0 small ${tempStatusClass}`;
+                
+                document.getElementById('currentWeather').textContent = data.currentWeather || 'Partly Cloudy';
+                document.getElementById('currentTemp').textContent = data.currentTemp || 24;
+                document.getElementById('weatherForecast').textContent = data.forecast || 'Rain expected soon';
+                
+                const weatherIcons = {
+                    'clear': '<i class="fas fa-sun"></i>',
+                    'partly cloudy': '<i class="fas fa-cloud-sun"></i>',
+                    'cloudy': '<i class="fas fa-cloud"></i>',
+                    'rain': '<i class="fas fa-cloud-rain"></i>',
+                    'storm': '<i class="fas fa-bolt"></i>',
+                    'snow': '<i class="fas fa-snowflake"></i>'
+                };
+                
+                const weatherLower = (data.currentWeather || '').toLowerCase();
+                const weatherIcon = Object.keys(weatherIcons).find(key => weatherLower.includes(key));
+                document.getElementById('currentWeatherIcon').innerHTML = weatherIcon ? weatherIcons[weatherIcon] : '<i class="fas fa-cloud"></i>';
+                
+                const systemHealth = data.systemHealth || 92;
+                document.getElementById('systemHealthStatus').textContent = `${systemHealth}%`;
+                document.getElementById('systemHealthProgress').style.width = `${systemHealth}%`;
+                
+                let healthClass = 'bg-success';
+                if (systemHealth < 70) {
+                    healthClass = 'bg-danger';
+                } else if (systemHealth < 90) {
+                    healthClass = 'bg-warning';
+                }
+                
+                document.getElementById('systemHealthProgress').className = `progress-bar ${healthClass}`;
+                document.getElementById('systemHealthDetails').textContent = data.systemHealthDetails || 'All systems operational';
+                
+                document.getElementById('waterLevelPercent').textContent = data.waterLevel || 75;
+                document.getElementById('waterLevelProgress').style.width = `${data.waterLevel || 75}%`;
+                document.getElementById('todayWaterUsage').textContent = data.waterUsage || '1,250 liters';
+                document.getElementById('lastIrrigationUpdate').textContent = data.lastUpdate || '30 min ago';
+                
+                if (data.irrigationStatus === 'offline') {
+                    document.getElementById('irrigationStatus').className = 'badge bg-danger';
+                    document.getElementById('irrigationStatus').textContent = 'Offline';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading dashboard data:', error);
+            });
+    }
+    
+    function loadFieldStatus() {
+        fetch('/api/field-status')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('fieldStatusBody');
+                if (!data || !data.fields || data.fields.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No field data available</td></tr>';
+                    return;
+                }
+                
+                let html = '';
+                data.fields.forEach(field => {
+                    let statusBadge = '';
+                    
+                    switch (field.status.toLowerCase()) {
+                        case 'good':
+                            statusBadge = '<span class="badge bg-success">Good</span>';
+                            break;
+                        case 'warning':
+                            statusBadge = '<span class="badge bg-warning text-dark">Warning</span>';
+                            break;
+                        case 'alert':
+                            statusBadge = '<span class="badge bg-danger">Alert</span>';
+                            break;
+                        default:
+                            statusBadge = '<span class="badge bg-secondary">Unknown</span>';
+                    }
+                    
+                    html += `
+                    <tr data-field-status="${field.status.toLowerCase()}">
+                        <td>${field.name}</td>
+                        <td>${field.cropType}</td>
+                        <td>${field.lastIrrigation}</td>
+                        <td>${field.soilMoisture}%</td>
+                        <td>${field.temperature}°C</td>
+                        <td>${statusBadge}</td>
+                    </tr>
+                    `;
+                });
+                
+                tableBody.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error loading field status:', error);
+                document.getElementById('fieldStatusBody').innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error loading field data</td></tr>';
+            });
+    }
+    
+    function loadAlerts() {
+        fetch('/api/sensor-alerts')
+            .then(response => response.json())
+            .then(data => {
+                const alertsContainer = document.getElementById('alertsContainer');
+                if (!data || !data.alerts || data.alerts.length === 0) {
+                    alertsContainer.innerHTML = '<p class="text-center">No alerts at this time</p>';
+                    return;
+                }
+                
+                let html = '';
+                data.alerts.forEach(alert => {
+                    let alertClass = 'info';
+                    let iconClass = 'info-circle';
+                    
+                    switch (alert.severity.toLowerCase()) {
+                        case 'critical':
+                        case 'high':
+                            alertClass = 'danger';
+                            iconClass = 'exclamation-circle';
+                            break;
+                        case 'warning':
+                        case 'medium':
+                            alertClass = 'warning';
+                            iconClass = 'exclamation-triangle';
+                            break;
+                        case 'low':
+                            alertClass = 'info';
+                            break;
+                        case 'success':
+                            alertClass = 'success';
+                            iconClass = 'check-circle';
+                            break;
+                    }
+                    
+                    html += `
+                    <div class="alert alert-${alertClass} d-flex align-items-center" role="alert">
+                        <i class="fas fa-${iconClass} me-2"></i>
+                        <div>
+                            <div class="d-flex justify-content-between">
+                                <strong>${alert.title}</strong>
+                                <small>${alert.time}</small>
+                            </div>
+                            <div>${alert.message}</div>
+                        </div>
+                    </div>
+                    `;
+                });
+                
+                alertsContainer.innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error loading alerts:', error);
+                document.getElementById('alertsContainer').innerHTML = '<p class="text-center text-danger">Error loading alerts</p>';
+            });
+    }
+    
+    function initDashboard() {
+        loadDashboardData();
+        loadFieldStatus();
+        loadAlerts();
+    }
+    
+    document.getElementById('refreshDashboard').addEventListener('click', function() {
+        this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Refreshing...';
+        initDashboard();
+        setTimeout(() => {
+            this.innerHTML = '<i class="fas fa-sync-alt me-1"></i> Refresh';
+        }, 1000);
+    });
+    
+    document.querySelectorAll('[data-field-filter]').forEach(filter => {
+        filter.addEventListener('click', function(e) {
+            e.preventDefault();
+            const filterType = this.getAttribute('data-field-filter');
+            const rows = document.querySelectorAll('#fieldStatusTable tbody tr');
+            
+            rows.forEach(row => {
+                if (filterType === 'all') {
+                    row.classList.remove('d-none');
+                } else if (filterType === 'need-attention') {
+                    const status = row.getAttribute('data-field-status');
+                    row.classList.toggle('d-none', status === 'good');
+                } else {
+                    const status = row.getAttribute('data-field-status');
+                    row.classList.toggle('d-none', status !== filterType);
+                }
+            });
+            
+            document.getElementById('dropdownMenuButton').textContent = this.textContent;
+        });
+    });
+    
+    document.getElementById('startIrrigationBtn').addEventListener('click', function() {
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Starting...';
+        
+        setTimeout(() => {
+            document.getElementById('irrigationStatus').className = 'badge bg-success';
+            document.getElementById('irrigationStatus').textContent = 'Running';
+            this.innerHTML = '<i class="fas fa-play me-1"></i> Start';
+            this.disabled = false;
+        }, 1500);
+    });
+    
+    document.getElementById('stopIrrigationBtn').addEventListener('click', function() {
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Stopping...';
+        
+        setTimeout(() => {
+            document.getElementById('irrigationStatus').className = 'badge bg-secondary';
+            document.getElementById('irrigationStatus').textContent = 'Standby';
+            this.innerHTML = '<i class="fas fa-stop me-1"></i> Stop';
+            this.disabled = false;
+        }, 1500);
+    });
+    
+    let dashboardRefreshInterval = setInterval(initDashboard, 300000);
+    
+    document.addEventListener('DOMContentLoaded', initDashboard);
+</script>
+{% endblock %} 

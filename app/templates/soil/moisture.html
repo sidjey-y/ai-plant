@@ -1,0 +1,241 @@
+{% extends 'soil_analysis.html' %}
+
+{% block title %}Soil Moisture - (A)I Plant{% endblock %}
+
+{% set active_tab = 'moisture' %}
+
+{% block content %}
+{{ super() }}
+
+<div class="container-fluid py-4">
+    <div class="row g-3 mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Moisture Trends</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="moistureTrendChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Current Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">{{ moisture_data.moisture[-1]|default('42') }}%</h2>
+                        <span class="badge bg-{{ 
+                            'success' if moisture_data.status == 'normal' else
+                            'warning' if moisture_data.status in ['low', 'high'] else
+                            'danger' if moisture_data.status in ['critical_low', 'critical_high'] else
+                            'warning' 
+                        }} fs-6">{{ moisture_data.status|default('Normal')|capitalize }}</span>
+                    </div>
+                    
+                    <h6>Ideal Range</h6>
+                    <div class="progress mb-3" style="height: 20px;">
+                        <div class="progress-bar bg-danger" style="width: 30%">Too Dry</div>
+                        <div class="progress-bar bg-success" style="width: 20%">Ideal</div>
+                        <div class="progress-bar bg-danger" style="width: 50%">Too Wet</div>
+                    </div>
+                    <small class="d-flex justify-content-between">
+                        <span>0%</span>
+                        <span>{{ moisture_data.ideal_range.min|default('30') }}%</span>
+                        <span>{{ moisture_data.ideal_range.max|default('50') }}%</span>
+                        <span>100%</span>
+                    </small>
+                    
+                    <div class="mt-4">
+                        <h6>Irrigation Status</h6>
+                        <p>
+                            {% if moisture_data.status == 'critical_low' %}
+                            <span class="text-danger">Immediate irrigation needed</span>
+                            {% elif moisture_data.status == 'low' %}
+                            <span class="text-warning">Schedule irrigation soon</span>
+                            {% elif moisture_data.status == 'critical_high' %}
+                            <span class="text-danger">Excessive moisture - potential drainage issues</span>
+                            {% elif moisture_data.status == 'high' %}
+                            <span class="text-warning">Slightly wet - hold irrigation</span>
+                            {% else %}
+                            <span class="text-success">Moisture levels optimal - no irrigation needed</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Irrigation Recommendations</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6>Current Recommendation</h6>
+                        <p>
+                            {% if moisture_data.status == 'critical_low' %}
+                            Apply 2.5 cm of water immediately (approx. 25,000 liters/hectare)
+                            {% elif moisture_data.status == 'low' %}
+                            Schedule irrigation within 2 days: 1.5 cm of water (approx. 15,000 liters/hectare)
+                            {% elif moisture_data.status == 'critical_high' %}
+                            Check drainage systems and avoid irrigation for at least 7 days
+                            {% elif moisture_data.status == 'high' %}
+                            Hold irrigation for 3-5 days and monitor moisture levels
+                            {% else %}
+                            No irrigation needed at this time - moisture levels are optimal
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Forecast Date</th>
+                                <th>Weather</th>
+                                <th>Irrigation Plan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for plan in irrigation_forecast|default([
+                                {'date': 'Today', 'weather': 'Sunny, 28°C', 'plan': 'As needed'},
+                                {'date': 'Tomorrow', 'weather': 'Sunny, 30°C', 'plan': 'Schedule if low'},
+                                {'date': 'In 2 days', 'weather': 'Partly Cloudy, 26°C', 'plan': 'Schedule if low'},
+                                {'date': 'In 3 days', 'weather': 'Rain (15mm), 24°C', 'plan': 'Hold irrigation'},
+                                {'date': 'In 4 days', 'weather': 'Sunny, 27°C', 'plan': 'Check after rain'}
+                            ]) %}
+                            <tr>
+                                <td>{{ plan.date }}</td>
+                                <td>{{ plan.weather }}</td>
+                                <td>{{ plan.plan }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Soil Moisture Map</h5>
+                </div>
+                <div class="card-body">
+                    <div id="moistureMap" style="height: 300px; background-color: #f0f0f0; border-radius: 4px;">
+                        <!-- Map visualization would go here -->
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <p class="text-muted">Soil moisture distribution map</p>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="d-flex justify-content-between">
+                            <span class="small">Dry</span>
+                            <span class="small">Optimal</span>
+                            <span class="small">Wet</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-danger" style="width: 30%"></div>
+                            <div class="progress-bar bg-success" style="width: 40%"></div>
+                            <div class="progress-bar bg-info" style="width: 30%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the field ID from the URL or use a default
+        const urlParams = new URLSearchParams(window.location.search);
+        const fieldId = urlParams.get('field_id') || 'all';
+        
+        // Fetch moisture data for the selected field
+        fetch(`/soil/api/data?field_id=${fieldId}&type=moisture&range=7d`)
+            .then(response => response.json())
+            .then(data => {
+                initMoistureTrendChart(data);
+            })
+            .catch(error => {
+                console.error('Error fetching moisture data:', error);
+                // Initialize with mock data for demonstration
+                const mockData = {
+                    timestamps: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+                    moisture: [38, 36, 32, 28, 42, 44, 42],
+                    ideal_range: {
+                        min: 30,
+                        max: 50
+                    }
+                };
+                initMoistureTrendChart(mockData);
+            });
+        
+        function initMoistureTrendChart(data) {
+            const ctx = document.getElementById('moistureTrendChart').getContext('2d');
+            
+            // Create an array of the ideal range for each timestamp
+            const idealMin = Array(data.timestamps.length).fill(data.ideal_range.min);
+            const idealMax = Array(data.timestamps.length).fill(data.ideal_range.max);
+            
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.timestamps,
+                    datasets: [{
+                        label: 'Soil Moisture (%)',
+                        data: data.moisture,
+                        borderColor: '#2196F3',
+                        backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.2
+                    }, {
+                        label: 'Minimum Ideal',
+                        data: idealMin,
+                        borderColor: '#FF9800',
+                        borderDash: [5, 5],
+                        borderWidth: 1,
+                        fill: false,
+                        pointRadius: 0
+                    }, {
+                        label: 'Maximum Ideal',
+                        data: idealMax,
+                        borderColor: '#F44336',
+                        borderDash: [5, 5],
+                        borderWidth: 1,
+                        fill: false,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            suggestedMin: Math.max(0, Math.min(...data.moisture) - 10),
+                            suggestedMax: Math.min(100, Math.max(...data.moisture) + 10),
+                            title: {
+                                display: true,
+                                text: 'Moisture (%)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %} 

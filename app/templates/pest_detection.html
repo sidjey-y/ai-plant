@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+
+{% block title %}Pest Detection - AI-Powered Precision Agriculture Assistant{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h3 text-primary">
+            <i class="bi bi-bug me-2"></i>Pest Detection
+        </h2>
+        <a href="/pest-library" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-book me-1"></i>Pest Library
+        </a>
+    </div>
+    
+    <!-- Alert container -->
+    <div id="alert-container">
+        {% if message %}
+        <div class="alert alert-{{ message_type }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="row">
+        <!-- Upload Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0">Upload Image</h5>
+                </div>
+                <div class="card-body">
+                    <form id="pest-detection-form" action="/pest/analyze" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="field-id" class="form-label">Field</label>
+                            <select class="form-select" id="field-id" name="field_id" required>
+                                <option value="" selected disabled>Select a field</option>
+                                {% for field in fields %}
+                                <option value="{{ field.id }}">{{ field.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="crop-type" class="form-label">Crop Type</label>
+                            <select class="form-select" id="crop-type" name="crop_type" required>
+                                <option value="" selected disabled>Select a crop</option>
+                                {% for crop in crops %}
+                                <option value="{{ crop.id }}">{{ crop.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="image-upload" class="form-label">Plant Image</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="image-upload" name="image" 
+                                      accept="image/png, image/jpeg, image/jpg" required>
+                                <label class="input-group-text" for="image-upload">
+                                    <i class="bi bi-image"></i>
+                                </label>
+                            </div>
+                            <div class="form-text">Upload a clear image of the plant showing pest damage or the pest itself.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="symptoms" class="form-label">Observed Symptoms (Optional)</label>
+                            <textarea class="form-control" id="symptoms" name="symptoms" rows="3" 
+                                     placeholder="Describe what you've observed e.g., holes in leaves, discoloration, etc."></textarea>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="submit" id="analyze-btn" class="btn btn-primary px-4 py-2" disabled>
+                                <i class="bi bi-search me-2"></i>Analyze Image
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Preview and Results Section -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title mb-0">Image Preview</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div id="image-preview-container" class="mb-4">
+                        <div id="image-placeholder" class="d-flex align-items-center justify-content-center border rounded bg-light" style="height: 300px;">
+                            <div class="text-center text-secondary">
+                                <i class="bi bi-image fs-1"></i>
+                                <p class="mt-2">Selected image will appear here</p>
+                            </div>
+                        </div>
+                        <img id="image-preview" class="img-fluid rounded border d-none" alt="Image preview" style="max-height: 300px;">
+                    </div>
+                    
+                    <!-- Results section (initially hidden) -->
+                    <div id="results-section" class="d-none">
+                        <div id="loading-indicator" class="text-center p-5 d-none">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Analyzing image...</p>
+                        </div>
+                        
+                        {% if analysis_result %}
+                        <div id="analysis-results">
+                            <h5 class="mb-3 text-primary">Detection Results</h5>
+                            
+                            <div class="text-center mb-4">
+                                <img src="{{ url_for('static', filename='uploads/' + analysis_result.annotated_image) }}" 
+                                     class="img-fluid rounded border" alt="Annotated image" style="max-height: 250px;">
+                            </div>
+                            
+                            <div class="alert alert-{{ analysis_result.severity_color }} mb-4">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="alert-heading">{{ analysis_result.pest_name }}</h6>
+                                        <p class="mb-0">Confidence: {{ analysis_result.confidence }}%</p>
+                                        <p class="mb-0">Severity: {{ analysis_result.severity }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h6 class="text-start mb-2">Description</h6>
+                            <p class="text-start mb-3">{{ analysis_result.description }}</p>
+                            
+                            <h6 class="text-start mb-2">Recommended Actions</h6>
+                            <ul class="text-start">
+                                {% for action in analysis_result.recommended_actions %}
+                                <li>{{ action }}</li>
+                                {% endfor %}
+                            </ul>
+                            
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#report-history-modal">
+                                    <i class="bi bi-clock-history me-1"></i>View History
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#treatment-plan-modal">
+                                    <i class="bi bi-clipboard-check me-1"></i>Treatment Plan
+                                </button>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Detections Section -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white py-3">
+            <h5 class="card-title mb-0">Recent Detections</h5>
+        </div>
+        <div class="card-body p-0">
+            {% if recent_detections %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Field</th>
+                            <th scope="col">Crop</th>
+                            <th scope="col">Pest Detected</th>
+                            <th scope="col">Severity</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detection in recent_detections %}
+                        <tr>
+                            <td>{{ detection.date }}</td>
+                            <td>{{ detection.field_name }}</td>
+                            <td>{{ detection.crop_name }}</td>
+                            <td>{{ detection.pest_name }}</td>
+                            <td>
+                                <span class="badge bg-{{ detection.severity_color }} rounded-pill">
+                                    {{ detection.severity }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ detection.status_color }} rounded-pill">
+                                    {{ detection.status }}
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <a href="/pest/detection/{{ detection.id }}" class="btn btn-sm btn-outline-primary">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center p-4">
+                <i class="bi bi-search fs-3 text-secondary"></i>
+                <p class="text-secondary mt-2">No recent detections found</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-footer bg-white text-end">
+            <a href="/pest/history" class="btn btn-sm btn-outline-primary">View All Detections</a>
+        </div>
+    </div>
+</div>
+
+<!-- Treatment Plan Modal -->
+<div class="modal fade" id="treatment-plan-modal" tabindex="-1" aria-labelledby="treatment-plan-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="treatment-plan-modal-label">Treatment Plan for {{ analysis_result.pest_name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if analysis_result %}
+                <div class="mb-4">
+                    <h6>Treatment Options</h6>
+                    <div class="list-group mb-3">
+                        {% for treatment in analysis_result.treatments %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-1">{{ treatment.name }}</h6>
+                                <span class="badge bg-{{ treatment.type_color }} rounded-pill">{{ treatment.type }}</span>
+                            </div>
+                            <p class="mb-1 small">{{ treatment.description }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <small class="text-muted">Effectiveness: {{ treatment.effectiveness }}</small>
+                                <button class="btn btn-sm btn-primary" data-bs-toggle="collapse" data-bs-target="#treatment-details-{{ loop.index }}">
+                                    Details
+                                </button>
+                            </div>
+                            <div class="collapse mt-2" id="treatment-details-{{ loop.index }}">
+                                <div class="card card-body bg-light">
+                                    <h6>Application Instructions:</h6>
+                                    <p class="small">{{ treatment.instructions }}</p>
+                                    <h6>Precautions:</h6>
+                                    <p class="small">{{ treatment.precautions }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h6>Prevention Strategies</h6>
+                    <ul>
+                        {% for strategy in analysis_result.prevention_strategies %}
+                        <li>{{ strategy }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div>
+                    <h6>Track Treatment</h6>
+                    <form id="treatment-form">
+                        <div class="mb-3">
+                            <label for="treatment-selection" class="form-label">Selected Treatment</label>
+                            <select class="form-select" id="treatment-selection" required>
+                                <option value="" selected disabled>Select a treatment</option>
+                                {% for treatment in analysis_result.treatments %}
+                                <option value="{{ treatment.id }}">{{ treatment.name }} ({{ treatment.type }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="treatment-date" class="form-label">Application Date</label>
+                            <input type="date" class="form-control" id="treatment-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="treatment-notes" class="form-label">Notes</label>
+                            <textarea class="form-control" id="treatment-notes" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                {% else %}
+                <div class="text-center p-4">
+                    <p>No treatment plan available</p>
+                </div>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save Treatment</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Report History Modal -->
+<div class="modal fade" id="report-history-modal" tabindex="-1" aria-labelledby="report-history-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="report-history-modal-label">Pest Detection History for {{ selected_field.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                {% if pest_history %}
+                <div class="list-group list-group-flush">
+                    {% for item in pest_history %}
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <h6 class="mb-1">{{ item.pest_name }}</h6>
+                            <small class="text-muted">{{ item.date }}</small>
+                        </div>
+                        <p class="mb-1 small">{{ item.description }}</p>
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-{{ item.severity_color }}">{{ item.severity }}</span>
+                            <small>Field: {{ item.field_name }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center p-4">
+                    <p>No history available for this field</p>
+                </div>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

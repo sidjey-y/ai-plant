@@ -1,0 +1,15 @@
+{% extends 'soil_analysis.html' %}
+
+{% block title %}Soil Dashboard - AI Plant{% endblock %}
+
+{% set active_tab = 'dashboard' %}
+
+{% block content %}
+{{ super() }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Soil dashboard loaded');
+    });
+</script>
+{% endblock %} 

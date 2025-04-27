@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+
+{% block title %}Weather - (A)I Plant{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 vine-border">
+        <h1><i class="fas fa-cloud-sun me-2"></i>(A)I Plant Weather</h1>
+        <div class="d-flex align-items-center">
+            <div class="form-check form-switch me-3">
+                <input class="form-check-input" type="checkbox" id="alertsSwitch" checked>
+                <label class="form-check-label" for="alertsSwitch">Alerts</label>
+            </div>
+            <select class="form-select me-2">
+                <option>All Fields</option>
+                <option>Field 1</option>
+                <option>Field 2</option>
+                <option>Field 3</option>
+                <option>Field 4</option>
+            </select>
+            <button class="btn btn-primary"><i class="fas fa-sync-alt me-2"></i>Refresh</button>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="card mb-4 organic-card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Current Conditions</h5>
+                </div>
+                <div class="card-body ground-texture">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex">
+                                <div class="display-1 me-3">
+                                    <i class="fas fa-cloud-sun text-warning"></i>
+                                </div>
+                                <div>
+                                    <h2 class="mb-0">24°C</h2>
+                                    <p class="mb-0">Partly Cloudy</p>
+                                    <p class="mb-0 text-muted">Feels like 26°C</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-wind text-primary me-2 fa-fw"></i>
+                                        <div>
+                                            <small class="text-muted d-block">Wind</small>
+                                            <span>8 km/h NE</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-tint text-primary me-2 fa-fw"></i>
+                                        <div>
+                                            <small class="text-muted d-block">Humidity</small>
+                                            <span>65%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-thermometer-half text-primary me-2 fa-fw"></i>
+                                        <div>
+                                            <small class="text-muted d-block">Pressure</small>
+                                            <span>1018 hPa</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-eye text-primary me-2 fa-fw"></i>
+                                        <div>
+                                            <small class="text-muted d-block">Visibility</small>
+                                            <span>16 km</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row g-2 text-center">
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body py-2">
+                                    <p class="mb-1">Now</p>
+                                    <i class="fas fa-cloud-sun text-warning mb-2"></i>
+                                    <h6>24°C</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body py-2">
+                                    <p class="mb-1">14:00</p>
+                                    <i class="fas fa-cloud-sun text-warning mb-2"></i>
+                                    <h6>25°C</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body py-2">
+                                    <p class="mb-1">16:00</p>
+                                    <i class="fas fa-sun text-warning mb-2"></i>
+                                    <h6>26°C</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body py-2">
+                                    <p class="mb-1">18:00</p>
+                                    <i class="fas fa-sun text-warning mb-2"></i>
+                                    <h6>25°C</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body py-2">
+                                    <p class="mb-1">20:00</p>
+                                    <i class="fas fa-cloud text-secondary mb-2"></i>
+                                    <h6>22°C</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body py-2">
+                                    <p class="mb-1">22:00</p>
+                                    <i class="fas fa-cloud-moon text-secondary mb-2"></i>
+                                    <h6>19°C</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">7-Day Forecast</h5>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-light active">Temperature</button>
+                        <button type="button" class="btn btn-light">Precipitation</button>
+                        <button type="button" class="btn btn-light">Wind</button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <tbody>
+                                <tr>
+                                    <td class="align-middle" width="15%">Today</td>
+                                    <td class="align-middle" width="10%"><i class="fas fa-cloud-sun text-warning"></i></td>
+                                    <td class="align-middle" width="60%">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Morning</span>
+                                            <span>Afternoon</span>
+                                            <span>Evening</span>
+                                            <span>Night</span>
+                                        </div>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25">19°</div>
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="25">24°</div>
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25">26°</div>
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25">18°</div>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle text-center" width="15%">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary">18°</span>
+                                            <span class="mx-2">-</span>
+                                            <span class="text-danger">26°</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="align-middle">Tomorrow</td>
+                                    <td class="align-middle"><i class="fas fa-sun text-warning"></i></td>
+                                    <td class="align-middle">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Morning</span>
+                                            <span>Afternoon</span>
+                                            <span>Evening</span>
+                                            <span>Night</span>
+                                        </div>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25">20°</div>
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="25">26°</div>
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25">28°</div>
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25">21°</div>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary">20°</span>
+                                            <span class="mx-2">-</span>
+                                            <span class="text-danger">28°</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="align-middle">Wed, Jun 5</td>
+                                    <td class="align-middle"><i class="fas fa-cloud-rain text-primary"></i></td>
+                                    <td class="align-middle">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Morning</span>
+                                            <span>Afternoon</span>
+                                            <span>Evening</span>
+                                            <span>Night</span>
+                                        </div>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25">19°</div>
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25">22°</div>
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 25%" aria-valuenow="25">24°</div>
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25">18°</div>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="text-primary">18°</span>
+                                            <span class="mx-2">-</span>
+                                            <span class="text-warning">24°</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Weather Alerts</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <h6 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>Rain Expected</h6>
+                        <p class="mb-0">Heavy rain expected tomorrow. Consider adjusting irrigation schedules.</p>
+                        <hr>
+                        <small class="text-muted">Issued: Today, 10:24 AM</small>
+                    </div>
+                    <div class="alert alert-info">
+                        <h6 class="alert-heading"><i class="fas fa-info-circle me-2"></i>Temperature Change</h6>
+                        <p class="mb-0">Temperature expected to increase by 4°C in the next 24 hours.</p>
+                        <hr>
+                        <small class="text-muted">Issued: Today, 08:15 AM</small>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Precipitation Forecast</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="rainChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('rainChart').getContext('2d');
+        const rainChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Today', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Chance of Rain (%)',
+                    data: [20, 60, 80, 40, 30, 10, 5],
+                    backgroundColor: 'rgba(13, 110, 253, 0.7)',
+                    borderColor: 'rgba(13, 110, 253, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %} 

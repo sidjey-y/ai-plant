@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Fields - (A)I Plant{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 vine-border">
+        <h1><i class="fas fa-map-marker-alt me-2"></i>(A)I Plant Fields</h1>
+        <button class="btn btn-primary"><i class="fas fa-plus me-2"></i>Add New Field</button>
+    </div>
+
+    <div class="row g-4">
+        {% for field_id in range(1, 5) %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 organic-card plant-growth-effect">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Field {{ field_id }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span><i class="fas fa-tint me-2 text-water"></i>Moisture:</span>
+                            <span class="badge bg-{{ ['danger', 'success', 'success', 'warning'][field_id-1] }}">
+                                {{ [22, 38, 42, 28][field_id-1] }}%
+                            </span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div 
+                                aria-valuemin="0" 
+                                aria-valuemax="100"
+                                aria-valuenow="{{ [22, 38, 42, 28][field_id-1] }}"
+                                role="progressbar" 
+                                style="--progress-width: {{ [22, 38, 42, 28][field_id-1] }}%; width: var(--progress-width);"
+                                class="progress-bar bg-{{ ['danger', 'success', 'success', 'warning'][field_id-1] }}"
+                            ></div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span><i class="fas fa-thermometer-half me-2"></i>Temperature:</span>
+                        <span>{{ [23, 22, 24, 21][field_id-1] }}°C</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span><i class="fas fa-flask me-2"></i>Soil pH:</span>
+                        <span>{{ [6.2, 6.8, 7.1, 6.5][field_id-1] }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span><i class="fas fa-seedling me-2"></i>Crop:</span>
+                        <span>{{ ['Wheat', 'Corn', 'Soybeans', 'Barley'][field_id-1] }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span><i class="fas fa-calendar-alt me-2"></i>Planted:</span>
+                        <span>{{ ['Mar 15', 'Apr 10', 'Apr 22', 'Mar 30'][field_id-1] }}, 2023</span>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-group w-100">
+                        <a href="/soil_analysis?field_id={{ field_id }}" class="btn btn-outline-primary"><i class="fas fa-chart-line me-1"></i>Analysis</a>
+                        <a href="/irrigation?field_id={{ field_id }}" class="btn btn-outline-primary"><i class="fas fa-faucet me-1"></i>Irrigation</a>
+                        <button class="btn btn-outline-primary"><i class="fas fa-cog me-1"></i>Settings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(A)I Plant - Precision Agriculture Assistant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="landing-page">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <i class="bi bi-flower1"></i> (A)I Plant
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#features">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#benefits">Benefits</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-success text-white ms-2" href="{{ url_for('main.register') }}">Sign Up</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <header class="hero py-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h1 class="display-4 fw-bold">(A)I Plant</h1>
+                        <p class="lead my-4">
+                            Make data-driven decisions for your farm with our cutting-edge AI technology
+                        </p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                            <a href="{{ url_for('soil.nutrients') }}" class="btn btn-primary btn-lg px-4 me-md-2">View Soil Analysis</a>
+                            <a href="#features" class="btn btn-outline-secondary btn-lg px-4">Learn More</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <img src="{{ url_for('static', filename='images/dashboard.png') }}" class="img-fluid rounded" alt="Smart farming with IoT sensors">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section id="features" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5">Key Features</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="bi bi-moisture fs-1 text-primary mb-3"></i>
+                                <h3 class="card-title">Soil Quality Analysis</h3>
+                                <p class="card-text">
+                                    Real-time monitoring and analysis of soil conditions including moisture, 
+                                    pH levels, and nutrient content.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="bi bi-bug fs-1 text-primary mb-3"></i>
+                                <h3 class="card-title">Pest Detection</h3>
+                                <p class="card-text">
+                                    Advanced computer vision and predictive models to identify potential 
+                                    pest threats before they cause damage.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="bi bi-calendar-check fs-1 text-primary mb-3"></i>
+                                <h3 class="card-title">Planting Scheduler</h3>
+                                <p class="card-text">
+                                    AI-driven recommendations for optimal planting times based on 
+                                    environmental factors and crop requirements.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4 mt-3">
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="bi bi-router fs-1 text-primary mb-3"></i>
+                                <h3 class="card-title">IoT Integration</h3>
+                                <p class="card-text">
+                                    Seamless connection with field sensors to gather real-time 
+                                    agricultural data for enhanced decision making.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="bi bi-graph-up fs-1 text-primary mb-3"></i>
+                                <h3 class="card-title">Predictive Analytics</h3>
+                                <p class="card-text">
+                                    Machine learning models that predict soil conditions, pest behavior, 
+                                    and optimal farming practices.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="bi bi-cloud-download fs-1 text-primary mb-3"></i>
+                                <h3 class="card-title">Agrimetrics API</h3>
+                                <p class="card-text">
+                                    Integration with professional agricultural data sources for 
+                                    comprehensive insights and analysis.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="benefits" class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5">Benefits</h2>
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <img src="{{ url_for('static', filename='img/benefits-image.jpg') }}" class="img-fluid rounded" alt="Farmer using tablet in field">
+                    </div>
+                    <div class="col-lg-6">
+                        <ul class="list-group list-group-flush benefit-list">
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <strong>Increased Crop Yields:</strong> Optimize growing conditions for maximum harvest
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <strong>Reduced Resource Usage:</strong> Efficient water and fertilizer application
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <strong>Early Pest Detection:</strong> Identify and address issues before they spread
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <strong>Data-Driven Decisions:</strong> Base farming practices on real-time analytics
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <strong>Environmental Sustainability:</strong> Reduce ecological impact of farming
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                <strong>Cost Savings:</strong> Optimize inputs and reduce waste
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5">About (A)I Plant</h2>
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <p class="lead text-center">
+                            Our mission is to make precision agriculture accessible to farmers of all sizes. By combining artificial intelligence with agricultural science, we provide actionable insights that help optimize crop production while minimizing environmental impact.
+                        </p>
+                        <p class="text-center mt-4">
+                            <a href="{{ url_for('main.register') }}" class="btn btn-primary btn-lg">Join Us Today</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-5 bg-success text-white text-center">
+            <div class="container">
+                <h2>Ready to Transform Your Farming Practice?</h2>
+                <p class="lead">Join thousands of farmers who are already seeing results with (A)I Plant</p>
+                <a href="{{ url_for('main.register') }}" class="btn btn-light btn-lg mt-3">Sign Up Now</a>
+            </div>
+        </section>
+
+        <footer class="py-4 bg-dark text-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5><i class="bi bi-flower1"></i> (A)I Plant</h5>
+                        <p>Enhancing farming efficiency with AI-driven insights</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-white">Home</a></li>
+                            <li><a href="#features" class="text-white">Features</a></li>
+                            <li><a href="#benefits" class="text-white">Benefits</a></li>
+                            <li><a href="#about" class="text-white">About</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Contact</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="bi bi-envelope me-2"></i> info@aiplant.com</li>
+                            <li><i class="bi bi-telephone me-2"></i> (123) 456-7890</li>
+                            <li><i class="bi bi-geo-alt me-2"></i> 123 Farm Lane, Agriville</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-center">
+                    <p>&copy; 2023 (A)I Plant. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 

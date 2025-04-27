@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 - Server Error | (A)I Plant</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .error-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            color: #dc3545;
+            line-height: 1;
+        }
+        .error-plant {
+            font-size: 8rem;
+            color: #dc3545;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <div class="container flex-grow-1 d-flex align-items-center">
+        <div class="error-container">
+            <div class="error-plant">
+                <i class="bi bi-emoji-dizzy"></i>
+            </div>
+            <h1 class="error-code">500</h1>
+            <h2 class="mb-4">Server Error</h2>
+            <p class="lead mb-4">Oops! Something went wrong on our end. We're working to fix the issue.</p>
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                <a href="{{ url_for('main.index') }}" class="btn btn-danger btn-lg px-4 gap-3">
+                    <i class="bi bi-house-door me-2"></i>Go Home
+                </a>
+                <a href="{{ url_for('soil.nutrients') }}" class="btn btn-outline-danger btn-lg px-4">
+                    <i class="bi bi-moisture me-2"></i>View Soil Analysis
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="py-3 bg-light mt-auto">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2023 (A)I Plant. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 

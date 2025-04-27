@@ -1,0 +1,405 @@
+{% extends 'soil_analysis.html' %}
+
+{% block title %}Soil Recommendations - AI Plant{% endblock %}
+
+{% set active_tab = 'recommendations' %}
+
+{% block content %}
+{{ super() }}
+
+<div class="container-fluid py-4">
+    <div class="row g-3 mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Soil Health Improvement Plan</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <h6 class="alert-heading">AI-Generated Recommendations</h6>
+                        <p class="mb-0">These recommendations are based on your soil test results, crop history, local climate conditions, and sustainable agriculture best practices.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6>Overall Soil Health Score: <span class="badge bg-{{ overall_health_class|default('success') }}">{{ overall_health_score|default('78') }}/100</span></h6>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar bg-{{ overall_health_class|default('success') }} progress-width-{{ overall_health_score|default('78') }}">{{ overall_health_score|default('78') }}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row g-3 mb-4">
+        {% for category in recommendation_categories|default([
+            {'name': 'Fertility Management', 'icon': 'bi-droplet-fill', 'class': 'warning', 'priority': 'High'},
+            {'name': 'Soil Structure & Tilth', 'icon': 'bi-layers-fill', 'class': 'success', 'priority': 'Medium'},
+            {'name': 'pH Balancing', 'icon': 'bi-thermometer-half', 'class': 'success', 'priority': 'Low'},
+            {'name': 'Organic Matter', 'icon': 'bi-recycle', 'class': 'danger', 'priority': 'High'}
+        ]) %}
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="rounded-circle bg-light mx-auto d-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="{{ category.icon }} fs-2 text-{{ category.class }}"></i>
+                    </div>
+                    <h5>{{ category.name }}</h5>
+                    <span class="badge bg-{{ category.class }}">{{ category.priority }} Priority</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="row g-3">
+        <div class="col-md-12">
+            <div class="accordion" id="recommendationsAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFertility">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFertility" aria-expanded="true" aria-controls="collapseFertility">
+                            Fertility Management
+                        </button>
+                    </h2>
+                    <div id="collapseFertility" class="accordion-collapse collapse show" aria-labelledby="headingFertility" data-bs-parent="#recommendationsAccordion">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h6>Identified Issues:</h6>
+                                    <ul>
+                                        <li>Nitrogen (N) levels are below optimal range (25 ppm, target 40-80 ppm)</li>
+                                        <li>Potassium (K) is slightly below target range (180 ppm, target 200-300 ppm)</li>
+                                        <li>Zinc (Zn) deficiency detected (2.1 ppm, target 3-8 ppm)</li>
+                                    </ul>
+                                    
+                                    <h6 class="mt-4">Recommended Actions:</h6>
+                                    <ol>
+                                        <li>
+                                            <strong>Apply balanced NPK fertilizer:</strong> Use 300 kg/ha of 10-10-10 as base application
+                                            <p class="small text-muted">This provides a foundation of nutrients that addresses multiple needs</p>
+                                        </li>
+                                        <li>
+                                            <strong>Add supplemental nitrogen:</strong> Apply 65 kg/ha of urea (46-0-0)
+                                            <p class="small text-muted">Additional N source to address specific nitrogen deficiency</p>
+                                        </li>
+                                        <li>
+                                            <strong>Zinc supplementation:</strong> Apply 5 kg/ha of zinc sulfate
+                                            <p class="small text-muted">Targeted micronutrient application for the zinc deficiency</p>
+                                        </li>
+                                    </ol>
+                                    
+                                    <h6 class="mt-4">Application Timing:</h6>
+                                    <p>Apply base fertilizer pre-planting or early in the growing season. Split nitrogen application with 60% at planting and 40% during vegetative growth phase.</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="card-title mb-0">Sustainability Considerations</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="small">
+                                                <li>Consider using controlled-release fertilizers to reduce leaching</li>
+                                                <li>Implement cover crops to naturally improve soil fertility</li>
+                                                <li>Rotate with legumes to naturally fix nitrogen</li>
+                                                <li>Use soil testing annually to adjust fertilization plans</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingStructure">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseStructure" aria-expanded="false" aria-controls="collapseStructure">
+                            Soil Structure & Tilth
+                        </button>
+                    </h2>
+                    <div id="collapseStructure" class="accordion-collapse collapse" aria-labelledby="headingStructure" data-bs-parent="#recommendationsAccordion">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h6>Identified Issues:</h6>
+                                    <ul>
+                                        <li>Moderate compaction detected in field sections 2 and 3</li>
+                                        <li>Moderate soil aggregation</li>
+                                        <li>Water infiltration rate is below optimal (1.2 in/hr)</li>
+                                    </ul>
+                                    
+                                    <h6 class="mt-4">Recommended Actions:</h6>
+                                    <ol>
+                                        <li>
+                                            <strong>Reduce tillage operations:</strong> Implement minimum tillage practices
+                                            <p class="small text-muted">Minimizes disruption of soil structure and reduces compaction</p>
+                                        </li>
+                                        <li>
+                                            <strong>Use cover crops:</strong> Plant winter rye or clover after harvest
+                                            <p class="small text-muted">Roots help break up compaction and improve soil structure</p>
+                                        </li>
+                                        <li>
+                                            <strong>Control equipment traffic:</strong> Use designated traffic lanes for machinery
+                                            <p class="small text-muted">Limits soil compaction to specific areas of the field</p>
+                                        </li>
+                                        <li>
+                                            <strong>Consider mechanical aeration:</strong> Use vertical tillage in severely compacted areas
+                                            <p class="small text-muted">Only as needed to address significant compaction issues</p>
+                                        </li>
+                                    </ol>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-light">
+                                            <h6 class="card-title mb-0">Implementation Timeline</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-2">
+                                                <strong class="small">Short Term (0-3 months):</strong>
+                                                <p class="small mb-1">Adjust equipment traffic patterns, plan for cover crops</p>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="small">Medium Term (3-12 months):</strong>
+                                                <p class="small mb-1">Implement cover crops, minimum tillage practices</p>
+                                            </div>
+                                            <div>
+                                                <strong class="small">Long Term (1-3 years):</strong>
+                                                <p class="small mb-1">Full transition to conservation tillage system</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h6>Expected Improvements:</h6>
+                                            <ul class="small">
+                                                <li>Increased water infiltration by 50-75%</li>
+                                                <li>Reduced runoff and erosion</li>
+                                                <li>Better root penetration and development</li>
+                                                <li>Improved drought resistance</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- pH Balancing -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingPH">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePH" aria-expanded="false" aria-controls="collapsePH">
+                            pH Balancing
+                        </button>
+                    </h2>
+                    <div id="collapsePH" class="accordion-collapse collapse" aria-labelledby="headingPH" data-bs-parent="#recommendationsAccordion">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h6>Current Status:</h6>
+                                    <p>Your soil pH is currently 6.5, which is within the optimal range (6.2-6.8) for most crops. No adjustment is needed at this time.</p>
+                                    
+                                    <h6 class="mt-4">Monitoring Recommendations:</h6>
+                                    <ul>
+                                        <li>Continue regular soil testing (annually)</li>
+                                        <li>Monitor pH if applying high rates of nitrogen fertilizers, which can acidify soil over time</li>
+                                        <li>Consider crop-specific pH needs when planning rotations</li>
+                                    </ul>
+                                    
+                                    <h6 class="mt-4">For Future Reference:</h6>
+                                    <p>If pH adjustment becomes necessary:</p>
+                                    <ul>
+                                        <li><strong>To raise pH:</strong> Apply agricultural lime at 1-2 tons/hectare</li>
+                                        <li><strong>To lower pH:</strong> Apply elemental sulfur at 100-300 kg/hectare</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="card-title mb-0">Crop pH Preferences</h6>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <table class="table table-sm mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Crop</th>
+                                                        <th>Preferred pH</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Corn</td>
+                                                        <td>5.8 - 7.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Soybeans</td>
+                                                        <td>6.0 - 7.0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Wheat</td>
+                                                        <td>5.5 - 7.5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Alfalfa</td>
+                                                        <td>6.5 - 7.5</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Potatoes</td>
+                                                        <td>4.8 - 6.5</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOrganic">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrganic" aria-expanded="false" aria-controls="collapseOrganic">
+                            Organic Matter
+                        </button>
+                    </h2>
+                    <div id="collapseOrganic" class="accordion-collapse collapse" aria-labelledby="headingOrganic" data-bs-parent="#recommendationsAccordion">
+                        <div class="accordion-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h6>Identified Issues:</h6>
+                                    <ul>
+                                        <li>Current organic matter is 3.2%, below target of 4-5% for your soil type</li>
+                                        <li>Microbial activity is moderate</li>
+                                        <li>Carbon sequestration potential is underutilized</li>
+                                    </ul>
+                                    
+                                    <h6 class="mt-4">Recommended Actions:</h6>
+                                    <ol>
+                                        <li>
+                                            <strong>Apply compost or well-rotted manure:</strong> 10-15 tons/hectare annually
+                                            <p class="small text-muted">Directly adds organic matter and stimulates soil biology</p>
+                                        </li>
+                                        <li>
+                                            <strong>Implement crop rotation with high residue crops:</strong> Include corn, wheat, or sorghum
+                                            <p class="small text-muted">Increases biomass returned to soil</p>
+                                        </li>
+                                        <li>
+                                            <strong>Plant cover crops:</strong> Use multi-species mixes including legumes and grasses
+                                            <p class="small text-muted">Adds diverse organic inputs and supports soil biology</p>
+                                        </li>
+                                        <li>
+                                            <strong>Reduce tillage intensity:</strong> Minimize soil disturbance
+                                            <p class="small text-muted">Slows decomposition of organic matter</p>
+                                        </li>
+                                        <li>
+                                            <strong>Leave crop residues:</strong> Incorporate rather than removing
+                                            <p class="small text-muted">Returns carbon and nutrients to soil</p>
+                                        </li>
+                                    </ol>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-light">
+                                            <h6 class="card-title mb-0">Benefits of Increased Organic Matter</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="small">
+                                                <li>Enhanced nutrient retention and cycling</li>
+                                                <li>Improved water holding capacity (each 1% OM increase holds ~20,000 gallons/acre)</li>
+                                                <li>Better soil structure and reduced compaction</li>
+                                                <li>Increased carbon sequestration</li>
+                                                <li>Greater microbial diversity and activity</li>
+                                                <li>Reduced fertilizer requirements over time</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h6 class="card-title mb-0">Expected Timeline</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="small">Increasing organic matter is a long-term process:</p>
+                                            <div class="progress mb-2" style="height: 20px;">
+                                                <div class="progress-bar bg-success w-30">Year 1</div>
+                                                <div class="progress-bar bg-info w-30">Year 2</div>
+                                                <div class="progress-bar bg-primary w-40">Year 3+</div>
+                                            </div>
+                                            <p class="small">Expect to see a 0.1-0.3% increase per year with proper management</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row g-3 mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Implementation Schedule</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Timeframe</th>
+                                    <th>Action Items</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in implementation_schedule|default([
+                                    {'timeframe': 'Immediate (0-30 days)', 'action': 'Soil testing in field sections with suspected issues', 'priority': 'High', 'status': 'Not Started', 'status_class': 'secondary'},
+                                    {'timeframe': 'Immediate (0-30 days)', 'action': 'Develop nutrient management plan', 'priority': 'High', 'status': 'In Progress', 'status_class': 'warning'},
+                                    {'timeframe': 'Short-term (1-3 months)', 'action': 'Apply NPK fertilizer with zinc supplement', 'priority': 'High', 'status': 'Not Started', 'status_class': 'secondary'},
+                                    {'timeframe': 'Short-term (1-3 months)', 'action': 'Implement traffic management plan to reduce compaction', 'priority': 'Medium', 'status': 'Not Started', 'status_class': 'secondary'},
+                                    {'timeframe': 'Medium-term (3-6 months)', 'action': 'Plant cover crops post-harvest', 'priority': 'Medium', 'status': 'Planned', 'status_class': 'info'},
+                                    {'timeframe': 'Medium-term (3-6 months)', 'action': 'Apply compost/manure to increase organic matter', 'priority': 'High', 'status': 'Planned', 'status_class': 'info'},
+                                    {'timeframe': 'Long-term (6-12 months)', 'action': 'Transition to reduced tillage practices', 'priority': 'Medium', 'status': 'Not Started', 'status_class': 'secondary'},
+                                    {'timeframe': 'Long-term (6-12 months)', 'action': 'Follow-up soil testing to monitor improvements', 'priority': 'Medium', 'status': 'Not Started', 'status_class': 'secondary'}
+                                ]) %}
+                                <tr>
+                                    <td>{{ item.timeframe }}</td>
+                                    <td>{{ item.action }}</td>
+                                    <td>{{ item.priority }}</td>
+                                    <td><span class="badge bg-{{ item.status_class }}">{{ item.status }}</span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary">
+                        <i class="bi bi-download me-1"></i> Export Recommendations
+                    </button>
+                    <button class="btn btn-outline-secondary">
+                        <i class="bi bi-printer me-1"></i> Print Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .progress-width-78 {
+        width: 78%;
+    }
+    .w-30 {
+        width: 30%;
+    }
+    .w-40 {
+        width: 40%;
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,528 @@
+:root {
+    --color-soil-dark: #3E2723;
+    --color-soil-medium: #5D4037;
+    --color-soil-light: #8D6E63;
+    --color-leaf-dark: #33691E;
+    --color-leaf-medium: #558B2F;
+    --color-leaf-light: #7CB342;
+    --color-accent: #8BC34A;
+    --color-water: #0288D1;
+    --color-sunshine: #FFB300;
+    --color-danger: #D32F2F;
+    --color-warning: #FFA000;
+    --color-success: #689F38;
+    --color-info: #0097A7;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #FAFDF7;
+    background-image: url('/static/img/textures/subtle-light-pattern.png');
+    background-repeat: repeat;
+    color: #333;
+    position: relative;
+    cursor: url('/static/img/cursors/leaf-cursor.png') 2 2, auto;
+}
+
+a, button, select, input, .clickable, .nav-link, .dropdown-item {
+    cursor: url('/static/img/cursors/leaf-cursor-hover.png') 2 2, pointer;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/static/img/textures/leaf-overlay.png');
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    background-size: 450px;
+    opacity: 0.05;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.navbar {
+    background: linear-gradient(to right, var(--color-leaf-dark), var(--color-leaf-medium)) !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid var(--color-accent);
+}
+
+.navbar-brand {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.navbar-brand i {
+    color: var(--color-accent);
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+    position: relative;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: white;
+    transform: translateY(-2px);
+}
+
+.navbar-dark .navbar-nav .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0.35rem;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+    opacity: 0;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover::after {
+    width: 60%;
+    opacity: 1;
+}
+
+.navbar-dark .navbar-nav .active .nav-link {
+    color: white;
+    font-weight: 600;
+}
+
+.navbar-dark .navbar-nav .active .nav-link::after {
+    width: 60%;
+    opacity: 1;
+}
+
+.dropdown-menu {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-top: 3px solid var(--color-accent);
+    animation: growDown 0.3s ease-in-out;
+    transform-origin: top center;
+}
+
+.dropdown-item {
+    padding: 0.6rem 1.5rem;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(139, 195, 74, 0.1);
+    transform: translateX(5px);
+}
+
+.dropdown-item i, .dropdown-item span {
+    color: var(--color-leaf-medium);
+}
+
+.btn-primary, .bg-primary {
+    background-color: var(--color-leaf-medium) !important;
+    border-color: var(--color-leaf-dark) !important;
+}
+
+.btn-outline-primary {
+    color: var(--color-leaf-medium) !important;
+    border-color: var(--color-leaf-medium) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--color-leaf-medium) !important;
+    color: white !important;
+}
+
+.btn-success, .bg-success {
+    background-color: var(--color-success) !important;
+    border-color: var(--color-leaf-dark) !important;
+}
+
+.btn-info, .bg-info {
+    background-color: var(--color-info) !important;
+    border-color: #00838F !important;
+}
+
+.btn-warning, .bg-warning {
+    background-color: var(--color-warning) !important;
+    border-color: #FF8F00 !important;
+}
+
+.btn-danger, .bg-danger {
+    background-color: var(--color-danger) !important;
+    border-color: #C62828 !important;
+}
+
+.btn {
+    border-radius: 0.25rem;
+    padding: 0.5rem 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.6s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    background-color: #FFFFFF;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.card-header {
+    border-bottom: none;
+    background: linear-gradient(to right, var(--color-leaf-medium), var(--color-leaf-light));
+    color: white;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.progress {
+    background-color: #E8F5E9;
+    border-radius: 1rem;
+    height: 0.75rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    border-radius: 1rem;
+    background-image: linear-gradient(to right, var(--color-leaf-medium), var(--color-leaf-light));
+}
+
+.list-group-item {
+    border-left: none;
+    border-right: none;
+    border-color: #E8F5E9;
+    padding: 1rem 1.25rem;
+    transition: all 0.2s;
+}
+
+.list-group-item:hover {
+    background-color: #F1F8E9;
+}
+
+.table {
+    --bs-table-hover-bg: #F1F8E9;
+}
+
+.table thead th {
+    border-top: none;
+    border-bottom: 2px solid var(--color-accent);
+    color: var(--color-soil-dark);
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+}
+
+.table td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.75em;
+    border-radius: 0.25rem;
+}
+
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    border: 1px solid #E8F5E9;
+    padding: 0.625rem 1rem;
+    background-color: #FFFFFF;
+    transition: all 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 0.25rem rgba(139, 195, 74, 0.25);
+}
+
+.soil-nav {
+    background-color: var(--color-soil-medium);
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.soil-nav .nav-link {
+    color: #F1F8E9;
+    padding: 1rem 1.5rem;
+    transition: all 0.3s;
+    border-radius: 0;
+}
+
+.soil-nav .nav-link:hover {
+    background-color: var(--color-soil-light);
+    color: white;
+}
+
+.soil-nav .nav-link.active {
+    background-color: var(--color-leaf-dark);
+    color: white;
+    font-weight: 600;
+}
+
+.footer {
+    background-color: #F1F8E9 !important;
+    border-top: 1px solid #E8F5E9;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/static/img/textures/soil-texture.png');
+    background-position: bottom;
+    background-size: 100% 15px;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.icon-nutrient, .icon-water, .icon-ph, .icon-plant, .icon-soil {
+    display: inline-block;
+    position: relative;
+    top: -2px;
+    margin-right: 0.25rem;
+}
+
+.text-leaf {
+    color: var(--color-leaf-medium);
+}
+
+.text-soil {
+    color: var(--color-soil-medium);
+}
+
+.text-water {
+    color: var(--color-water);
+}
+
+.organic-border-left {
+    border-left: 4px solid var(--color-accent);
+    padding-left: 1rem;
+}
+
+.organic-card {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.organic-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(to right, var(--color-leaf-dark), var(--color-leaf-light));
+}
+
+.plant-growth-effect {
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.plant-growth-effect:hover {
+    transform: scale(1.03);
+}
+
+.ground-texture {
+    background-image: url('/static/img/textures/soil-texture.png');
+    background-repeat: repeat;
+    background-size: 200px;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    position: relative;
+}
+
+.ground-texture::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 0.5rem;
+}
+
+.ground-texture > * {
+    position: relative;
+}
+
+.leaf-bullet {
+    list-style: none;
+    padding-left: 1.5rem;
+}
+
+.leaf-bullet li {
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.leaf-bullet li::before {
+    content: "🌿";
+    position: absolute;
+    left: -1.5rem;
+    top: 0.1rem;
+    font-size: 0.85rem;
+}
+
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+    padding: 1rem 1.25rem;
+    position: relative;
+}
+
+.alert-success {
+    background-color: #F1F8E9;
+    color: var(--color-success);
+}
+
+.alert-info {
+    background-color: #E0F7FA;
+    color: var(--color-info);
+}
+
+.alert-warning {
+    background-color: #FFF8E1;
+    color: var(--color-warning);
+}
+
+.alert-danger {
+    background-color: #FFEBEE;
+    color: var(--color-danger);
+}
+
+@keyframes growDown {
+    0% {
+        transform: scaleY(0);
+    }
+    80% {
+        transform: scaleY(1.1);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.offcanvas {
+    border-left: 3px solid var(--color-accent);
+}
+
+.offcanvas-header {
+    background-color: #F1F8E9;
+    border-bottom: 1px solid #E8F5E9;
+}
+
+.offcanvas-title {
+    color: var(--color-leaf-dark);
+    font-weight: 600;
+}
+
+.animate-grow {
+    animation: grow 2s ease infinite alternate;
+}
+
+@keyframes grow {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.05);
+    }
+}
+
+.vine-border {
+    position: relative;
+    padding: 2rem;
+}
+
+.vine-border::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/static/img/textures/vine-border.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+    .navbar-dark .navbar-nav .nav-link::after {
+        display: none;
+    }
+    
+    .navbar-collapse {
+        background-color: var(--color-leaf-dark);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-top: 0.5rem;
+    }
+} 
