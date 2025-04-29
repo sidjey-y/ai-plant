@@ -1,4 +1,4 @@
-# (A)I Plant - AI-Powered Agriculture Monitoring System
+# (A)I Plant - AI-Powered Agriculture Monitoring System 
 
 ![Dashboard](readme_images/Dashboard.png)
 
@@ -6,18 +6,20 @@
 
 (A)I Plant is an intelligent agriculture monitoring system that leverages artificial intelligence to provide real-time soil analysis, nutrient monitoring, and farming recommendations. The platform helps farmers optimize their agricultural practices by offering detailed insights into soil quality, moisture levels, pH balance, and nutrient content across multiple fields.
 
+While (A)I Plant integrates machine learning models for soil quality prediction and recommendation generation, much of the current functionality operates as a simulation to demonstrate the intended AI capabilities. Full integration with live sensor data and real-time AI-driven analysis is planned for future development.
+
 ## Key Features
 
 ![Key Features](readme_images/Key-Features%20(2).png)
 
-- **Real-time Soil Analysis**: Monitor soil quality metrics including texture, structure, drainage, and organic matter content
-- **Nutrient Tracking**: Track essential nutrients like nitrogen, phosphorus, potassium, calcium, magnesium, and sulfur
-- **Moisture Monitoring**: Real-time soil moisture data with alerts for optimal irrigation timing
-- **pH Level Analysis**: Monitor and track soil pH levels for optimal crop growth
-- **Automated Recommendations**: AI-generated recommendations for fertilizer application and soil improvement
-- **Field Management**: Manage multiple fields with individual monitoring and recommendations
-- **Weather Integration**: Weather forecasts and historical data to inform farming decisions
-- **Irrigation Control**: Automated irrigation scheduling based on soil moisture and weather forecasts
+- Monitor soil quality metrics including texture, structure, drainage, and organic matter content
+- Track essential nutrients like nitrogen, phosphorus, potassium, calcium, magnesium, and sulfur
+- Real-time soil moisture data with alerts for optimal irrigation timing
+- Monitor and track soil pH levels for optimal crop growth
+- AI-generated recommendations for fertilizer application and soil improvement
+- Manage multiple fields with individual monitoring and recommendations
+- Weather forecasts and historical data to inform farming decisions
+- Automated irrigation scheduling based on soil moisture and weather forecasts
 
 ## Screenshots
 
@@ -133,8 +135,3 @@ ai-plant/
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Acknowledgments
-
-- Soil science data provided by agricultural research institutions
-- Weather data from meteorological services
-- IoT sensor manufacturers for hardware integration 
